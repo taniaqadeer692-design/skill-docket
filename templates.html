@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Resume Templates - SkillDocket</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 font-sans text-slate-100 min-h-screen">
+    <nav class="bg-slate-800/80 backdrop-blur border-b border-slate-700 py-4 px-8 flex justify-between items-center sticky top-0 z-50">
+        <div class="text-2xl font-black text-blue-500 tracking-wide">SkillDocket</div>
+        <div class="space-x-6 text-sm font-semibold">
+            <a href="index.html" class="text-slate-300 hover:text-blue-400">Home</a>
+            <a href="templates.html" class="text-blue-400">Templates</a>
+            <a href="builder.html" class="bg-blue-600 text-white px-4 py-2 rounded-xl">Builder</a>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto px-6 py-12 text-center">
+        <h1 class="text-3xl md:text-5xl font-black tracking-tight">Select Your Resume Template</h1>
+        <p class="mt-3 text-slate-400 text-sm">Click any template to fill details and see the live unique layout.</p>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-6 pb-24 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Template 1 -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 flex flex-col justify-between shadow-xl">
+            <div>
+                <div class="h-32 bg-slate-900 rounded-xl mb-4 p-3 border border-slate-700 flex gap-2">
+                    <div class="w-1/3 bg-slate-700 rounded"></div><div class="w-2/3 bg-slate-800 rounded"></div>
+                </div>
+                <h3 class="text-lg font-bold text-white">1. Dark Sidebar Modern</h3>
+                <p class="text-xs text-slate-400 mt-1">Left dark professional column with light main area.</p>
+            </div>
+            <a href="builder.html?template=1" class="mt-6 block text-center bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-xl text-xs font-bold transition">Select Template 1</a>
+        </div>
+
+        <!-- Template 2 -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 flex flex-col justify-between shadow-xl">
+            <div>
+                <div class="h-32 bg-slate-900 rounded-xl mb-4 p-3 border border-slate-700 grid grid-cols-2 gap-2">
+                    <div class="bg-teal-600/20 rounded"></div><div class="bg-slate-700/50 rounded"></div>
+                </div>
+                <h3 class="text-lg font-bold text-white">2. Executive Split-Grid</h3>
+                <p class="text-xs text-slate-400 mt-1">Two-column card grid layout.</p>
+            </div>
+            <a href="builder.html?template=2" class="mt-6 block text-center bg-teal-600 hover:bg-teal-500 text-white py-2 rounded-xl text-xs font-bold transition">Select Template 2</a>
+        </div>
+
+        <!-- Template 3 -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 flex flex-col justify-between shadow-xl">
+            <div>
+                <div class="h-32 bg-slate-900 rounded-xl mb-4 p-3 border border-slate-700 flex flex-col justify-between">
+                    <div class="h-4 bg-indigo-600/30 rounded"></div><div class="space-y-1"><div class="h-2 bg-slate-700 rounded w-full"></div></div>
+                </div>
+                <h3 class="text-lg font-bold text-white">3. Corporate Top-Header</h3>
+                <p class="text-xs text-slate-400 mt-1">Traditional banner header.</p>
+            </div>
+            <a href="builder.html?template=3" class="mt-6 block text-center bg-indigo-600 hover:bg-indigo-500 text-white py-2 rounded-xl text-xs font-bold transition">Select Template 3</a>
+        </div>
+
+        <!-- Template 4 -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 flex flex-col justify-between shadow-xl">
+            <div>
+                <div class="h-32 bg-slate-900 rounded-xl mb-4 p-3 border border-slate-700 flex flex-col items-center justify-center text-center">
+                    <div class="h-3 bg-amber-600/30 rounded w-1/2 mb-2"></div><div class="h-2 bg-slate-700 rounded w-3/4"></div>
+                </div>
+                <h3 class="text-lg font-bold text-white">4. Minimalist Elegant</h3>
+                <p class="text-xs text-slate-400 mt-1">Center-aligned typography.</p>
+            </div>
+            <a href="builder.html?template=4" class="mt-6 block text-center bg-amber-600 hover:bg-amber-500 text-white py-2 rounded-xl text-xs font-bold transition">Select Template 4</a>
+        </div>
+
+        <!-- Template 5 -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 flex flex-col justify-between shadow-xl">
+            <div>
+                <div class="h-32 bg-slate-900 rounded-xl mb-4 p-3 border border-slate-700 space-y-2">
+                    <div class="h-3 bg-emerald-600/30 rounded w-1/3"></div><div class="h-2 bg-slate-700 rounded w-full"></div>
+                </div>
+                <h3 class="text-lg font-bold text-white">5. Creative Timeline</h3>
+                <p class="text-xs text-slate-400 mt-1">Accent lines and timeline style.</p>
+            </div>
+            <a href="builder.html?template=5" class="mt-6 block text-center bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded-xl text-xs font-bold transition">Select Template 5</a>
+        </div>
+
+        <!-- Template 6 -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 flex flex-col justify-between shadow-xl">
+            <div>
+                <div class="h-32 bg-slate-900 rounded-xl mb-4 overflow-hidden border border-slate-700">
+                    <div class="h-10 bg-purple-600/40"></div><div class="p-2"><div class="h-2 bg-slate-700 rounded w-3/4"></div></div>
+                </div>
+                <h3 class="text-lg font-bold text-white">6. Executive Dark Header</h3>
+                <p class="text-xs text-slate-400 mt-1">Bold dark top banner.</p>
+            </div>
+            <a href="builder.html?template=6" class="mt-6 block text-center bg-purple-600 hover:bg-purple-500 text-white py-2 rounded-xl text-xs font-bold transition">Select Template 6</a>
+        </div>
+    </div>
+</body>
+</html>

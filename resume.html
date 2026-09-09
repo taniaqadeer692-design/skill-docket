@@ -7,258 +7,239 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
-<body class="bg-gray-100 font-sans py-10">
+<body class="bg-slate-900 font-sans py-10 px-4">
 
-    <!-- Top Action Bar & Template/Color Selector -->
-    <div class="max-w-3xl mx-auto mb-6 flex flex-wrap justify-between items-center px-4 gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-        <a href="builder.html" class="text-blue-600 font-semibold hover:underline">&larr; Back to Editor</a>
-        
-        <!-- Layout Style Selector -->
-        <div class="flex items-center gap-2">
-            <label class="text-xs font-bold uppercase text-gray-600">Layout:</label>
-            <select id="layoutSelector" onchange="updateResume()" class="px-2 py-1.5 border rounded-lg bg-gray-50 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="1">1. Modern Sidebar</option>
-                <option value="2">2. Executive Top-Header</option>
-                <option value="3">3. Minimalist Clean</option>
-                <option value="4">4. Bold Corporate</option>
-                <option value="5">5. Creative Grid</option>
-                <option value="6">6. Elegant Center</option>
-            </select>
-        </div>
-
-        <!-- Color Theme Selector (The 6 Colors we decided!) -->
-        <div class="flex items-center gap-2">
-            <label class="text-xs font-bold uppercase text-gray-600">Theme:</label>
-            <select id="themeSelector" onchange="updateResume()" class="px-2 py-1.5 border rounded-lg bg-gray-50 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="#1e3a8a">Corporate Navy</option>
-                <option value="#0f766e">Modern Teal</option>
-                <option value="#18181b">Executive Charcoal</option>
-                <option value="#4338ca">Creative Indigo</option>
-                <option value="#065f46">Emerald Clean</option>
-                <option value="#7e22ce">Royal Purple</option>
-            </select>
-        </div>
-
-        <button onclick="downloadPDF()" class="bg-blue-600 text-white px-5 py-2 rounded-xl text-xs font-bold shadow hover:bg-blue-700 transition">
-            Download PDF
-        </button>
+    <!-- Top Action Bar -->
+    <div class="max-w-4xl mx-auto mb-6 flex justify-between items-center bg-white/10 backdrop-blur p-4 rounded-2xl shadow-lg border border-white/10">
+        <a href="templates.html" class="text-white font-semibold hover:text-blue-400 transition">&larr; Choose Templates</a>
+        <span id="badge" class="bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl">Template Active</span>
+        <button onclick="downloadPDF()" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl font-bold shadow-md transition">Download PDF</button>
     </div>
 
-    <!-- Resume Container -->
-    <div id="resumeContainer" class="max-w-3xl mx-auto bg-white shadow-2xl rounded-xl border border-gray-200 overflow-hidden transition-all duration-300">
-        <!-- Dynamic Content -->
-    </div>
+    <!-- Resume Canvas Container -->
+    <div id="resumeContainer" class="max-w-4xl mx-auto bg-white shadow-2xl rounded-2xl overflow-hidden border border-slate-200"></div>
 
-    <!-- Script for Rendering All 6 Layouts & Colors -->
     <script>
-        const data = JSON.parse(localStorage.getItem('resumeData')) || {
-            fullName: "Tania Qadeer",
-            jobTitle: "Software Engineering Student",
-            email: "tania@example.com",
-            phone: "+92 300 1234567",
-            location: "Lahore, Pakistan",
-            education: "BS Computer Science - FAST NUCES (2022 - 2026)",
-            experience: "Web Development Intern - Built responsive web apps using modern tech.",
-            skills: "HTML, CSS, JavaScript, Tailwind, Git, Problem Solving",
-            profileImage: ""
-        };
+        const urlParams = new URLSearchParams(window.location.search);
+        const data = JSON.parse(localStorage.getItem('resumeData')) || {};
+        const templateId = urlParams.get('template') || data.templateId || '1';
 
-        function updateResume() {
-            const layout = document.getElementById('layoutSelector').value;
-            const color = document.getElementById('themeSelector').value;
-            const container = document.getElementById('resumeContainer');
-            let html = '';
+        document.getElementById('badge').innerText = `Template ${templateId} Active`;
 
-            // --- LAYOUT 1: Modern Sidebar ---
-            if (layout === '1') {
-                html = `
-                    <div class="p-10 grid grid-cols-3 gap-8">
-                        <div class="col-span-1 border-r pr-6 border-gray-200">
-                            ${data.profileImage ? `<div class="mb-6 flex justify-center"><img src="${data.profileImage}" class="w-32 h-32 object-cover rounded-full border-4 shadow" style="border-color: ${color};"></div>` : ''}
-                            <div class="mb-6">
-                                <h3 class="text-xs font-bold uppercase tracking-wider mb-2" style="color: ${color};">Contact</h3>
-                                <p class="text-xs text-gray-600 break-words mb-1">${data.email}</p>
-                                <p class="text-xs text-gray-600 mb-1">${data.phone}</p>
-                                <p class="text-xs text-gray-600">${data.location}</p>
-                            </div>
-                            <div>
-                                <h3 class="text-xs font-bold uppercase tracking-wider mb-2" style="color: ${color};">Skills</h3>
-                                <p class="text-xs text-gray-700 leading-relaxed">${data.skills}</p>
-                            </div>
-                        </div>
-                        <div class="col-span-2">
-                            <div class="border-b pb-6 mb-6">
-                                <h1 class="text-3xl font-extrabold text-gray-900">${data.fullName}</h1>
-                                <p class="text-md font-semibold mt-1" style="color: ${color};">${data.jobTitle}</p>
-                            </div>
-                            <div class="mb-6">
-                                <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">Education</h3>
-                                <p class="text-sm text-gray-700 whitespace-pre-line">${data.education}</p>
-                            </div>
-                            <div>
-                                <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">Experience & Projects</h3>
-                                <p class="text-sm text-gray-700 whitespace-pre-line">${data.experience}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-            // --- LAYOUT 2: Executive Top Header ---
-            else if (layout === '2') {
-                html = `
-                    <div class="p-10">
-                        <div class="flex items-center gap-6 border-b pb-6 mb-6" style="border-color: ${color};">
-                            ${data.profileImage ? `<img src="${data.profileImage}" class="w-24 h-32 object-cover rounded shadow border-2" style="border-color: ${color};">` : ''}
-                            <div>
-                                <h1 class="text-3xl font-extrabold text-gray-900">${data.fullName}</h1>
-                                <p class="text-lg font-semibold mt-1" style="color: ${color};">${data.jobTitle}</p>
-                                <p class="text-xs text-gray-500 mt-2">${data.email} | ${data.phone} | ${data.location}</p>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-6 mb-6">
-                            <div>
-                                <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 mb-2">Education</h3>
-                                <p class="text-sm text-gray-700 whitespace-pre-line">${data.education}</p>
-                            </div>
-                            <div>
-                                <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 mb-2">Skills</h3>
-                                <p class="text-sm text-gray-700">${data.skills}</p>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 mb-2">Experience & Projects</h3>
-                            <p class="text-sm text-gray-700 whitespace-pre-line">${data.experience}</p>
-                        </div>
-                    </div>
-                `;
-            }
-            // --- LAYOUT 3: Minimalist Clean ---
-            else if (layout === '3') {
-                html = `
-                    <div class="p-10 bg-gray-50">
-                        <div class="text-center border-b pb-6 mb-6 border-gray-300">
-                            <h1 class="text-4xl font-black tracking-tight text-gray-900">${data.fullName}</h1>
-                            <p class="text-md font-medium mt-1 uppercase tracking-widest" style="color: ${color};">${data.jobTitle}</p>
-                            <p class="text-xs text-gray-500 mt-3">${data.email} &bull; ${data.phone} &bull; ${data.location}</p>
-                        </div>
-                        <div class="mb-6">
-                            <h3 class="text-xs font-bold uppercase tracking-widest mb-2 border-b pb-1" style="color: ${color}; border-color: ${color};">Experience & Projects</h3>
-                            <p class="text-sm text-gray-700 whitespace-pre-line">${data.experience}</p>
-                        </div>
-                        <div class="mb-6">
-                            <h3 class="text-xs font-bold uppercase tracking-widest mb-2 border-b pb-1" style="color: ${color}; border-color: ${color};">Education</h3>
-                            <p class="text-sm text-gray-700 whitespace-pre-line">${data.education}</p>
-                        </div>
-                        <div>
-                            <h3 class="text-xs font-bold uppercase tracking-widest mb-2 border-b pb-1" style="color: ${color}; border-color: ${color};">Skills</h3>
-                            <p class="text-sm text-gray-700">${data.skills}</p>
-                        </div>
-                    </div>
-                `;
-            }
-            // --- LAYOUT 4: Bold Corporate (Dark Header) ---
-            else if (layout === '4') {
-                html = `
-                    <div class="bg-white">
-                        <div class="p-8 text-white" style="background-color: ${color};">
-                            <div class="flex items-center gap-6">
-                                ${data.profileImage ? `<img src="${data.profileImage}" class="w-20 h-20 object-cover rounded-full border-2 border-white shadow">` : ''}
-                                <div>
-                                    <h1 class="text-3xl font-extrabold">${data.fullName}</h1>
-                                    <p class="text-sm font-medium opacity-90 mt-1">${data.jobTitle}</p>
-                                    <p class="text-xs opacity-80 mt-2">${data.email} | ${data.phone} | ${data.location}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-8">
-                            <div class="mb-6">
-                                <h3 class="text-sm font-bold uppercase tracking-wider mb-2" style="color: ${color};">Education</h3>
-                                <p class="text-sm text-gray-700 whitespace-pre-line">${data.education}</p>
-                            </div>
-                            <div class="mb-6">
-                                <h3 class="text-sm font-bold uppercase tracking-wider mb-2" style="color: ${color};">Experience & Projects</h3>
-                                <p class="text-sm text-gray-700 whitespace-pre-line">${data.experience}</p>
-                            </div>
-                            <div>
-                                <h3 class="text-sm font-bold uppercase tracking-wider mb-2" style="color: ${color};">Skills</h3>
-                                <p class="text-sm text-gray-700">${data.skills}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-            // --- LAYOUT 5: Creative Grid ---
-            else if (layout === '5') {
-                html = `
-                    <div class="p-10">
-                        <div class="border-b-4 pb-4 mb-6 flex justify-between items-end" style="border-color: ${color};">
-                            <div>
-                                <h1 class="text-3xl font-black text-gray-900">${data.fullName}</h1>
-                                <p class="text-sm font-bold uppercase tracking-wider mt-1" style="color: ${color};">${data.jobTitle}</p>
-                            </div>
-                            <div class="text-right text-xs text-gray-500">
-                                <p>${data.email}</p>
-                                <p>${data.phone}</p>
-                                <p>${data.location}</p>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                                <h3 class="text-xs font-bold uppercase tracking-wider mb-2" style="color: ${color};">Education</h3>
-                                <p class="text-xs text-gray-700 whitespace-pre-line">${data.education}</p>
-                            </div>
-                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                                <h3 class="text-xs font-bold uppercase tracking-wider mb-2" style="color: ${color};">Skills</h3>
-                                <p class="text-xs text-gray-700">${data.skills}</p>
-                            </div>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                            <h3 class="text-xs font-bold uppercase tracking-wider mb-2" style="color: ${color};">Experience & Projects</h3>
-                            <p class="text-xs text-gray-700 whitespace-pre-line">${data.experience}</p>
-                        </div>
-                    </div>
-                `;
-            }
-            // --- LAYOUT 6: Elegant Center ---
-            else if (layout === '6') {
-                html = `
-                    <div class="p-12 text-center">
-                        ${data.profileImage ? `<div class="mb-4 flex justify-center"><img src="${data.profileImage}" class="w-24 h-24 object-cover rounded-full shadow border-2" style="border-color: ${color};"></div>` : ''}
-                        <h1 class="text-3xl font-serif font-bold text-gray-900">${data.fullName}</h1>
-                        <p class="text-sm font-semibold tracking-widest uppercase mt-1" style="color: ${color};">${data.jobTitle}</p>
-                        <p class="text-xs text-gray-500 mt-2">${data.email} &bull; ${data.phone} &bull; ${data.location}</p>
-                        
-                        <div class="w-16 h-0.5 mx-auto my-6" style="background-color: ${color};"></div>
-                        
-                        <div class="text-left mb-6">
-                            <h3 class="text-xs font-bold uppercase tracking-wider mb-2 text-center" style="color: ${color};">Experience & Projects</h3>
-                            <p class="text-sm text-gray-700 whitespace-pre-line text-center">${data.experience}</p>
-                        </div>
-                        <div class="text-left mb-6">
-                            <h3 class="text-xs font-bold uppercase tracking-wider mb-2 text-center" style="color: ${color};">Education</h3>
-                            <p class="text-sm text-gray-700 whitespace-pre-line text-center">${data.education}</p>
-                        </div>
-                        <div class="text-left">
-                            <h3 class="text-xs font-bold uppercase tracking-wider mb-2 text-center" style="color: ${color};">Skills</h3>
-                            <p class="text-sm text-gray-700 text-center">${data.skills}</p>
-                        </div>
-                    </div>
-                `;
-            }
-
-            container.innerHTML = html;
+        function formatBullets(text) {
+            if(!text) return '<p class="text-slate-400 italic">No details provided.</p>';
+            return text.split('\n').map(l => l.trim() ? `<div class="flex items-start gap-2 mb-1.5"><span class="text-blue-600 font-bold">•</span><span class="text-slate-700">${l.replace(/^[•\-\*]\s*/, '')}</span></div>` : '').join('');
+        }
+        
+        function formatSkills(skills) {
+            if(!skills) return '<span class="text-slate-400 italic">No skills added.</span>';
+            return skills.split(',').map(s => s.trim() ? `<span class="bg-slate-100 text-slate-800 px-3 py-1 rounded-lg text-xs font-semibold inline-block m-0.5 border border-slate-200">${s}</span>` : '').join('');
         }
 
-        // Initial load
-        updateResume();
+        const container = document.getElementById('resumeContainer');
+        let html = '';
+
+        // --- 6 POLISHED TEMPLATES ---
+        if (templateId === '1') {
+            // TEMPLATE 1: Dark Sidebar Modern
+            html = `
+                <div class="grid grid-cols-3 min-h-[850px]">
+                    <div class="col-span-1 bg-slate-900 text-slate-100 p-8 flex flex-col justify-between">
+                        <div>
+                            ${data.profileImage ? `<div class="mb-6 flex justify-center"><img src="${data.profileImage}" class="w-32 h-32 object-cover rounded-2xl border-2 border-blue-500 shadow"></div>` : ''}
+                            <h3 class="text-xs font-black uppercase tracking-widest text-blue-400 mb-3 pb-1 border-b border-slate-700">Contact</h3>
+                            <p class="text-xs text-slate-300 mb-1.5 break-words">📧 ${data.email || ''}</p>
+                            <p class="text-xs text-slate-300 mb-1.5">📞 ${data.phone || ''}</p>
+                            <p class="text-xs text-slate-300 mb-6">📍 ${data.location || ''}</p>
+                            
+                            <h3 class="text-xs font-black uppercase tracking-widest text-blue-400 mb-3 pb-1 border-b border-slate-700">Skills</h3>
+                            <div class="flex flex-wrap">${formatSkills(data.skills)}</div>
+                        </div>
+                    </div>
+                    <div class="col-span-2 p-10 bg-white text-slate-900 flex flex-col justify-between">
+                        <div>
+                            <div class="border-b border-slate-200 pb-6 mb-6">
+                                <h1 class="text-4xl font-black">${data.fullName || 'Your Name'}</h1>
+                                <p class="text-lg font-bold text-blue-600 mt-1 uppercase tracking-wide">${data.jobTitle || 'Profession'}</p>
+                            </div>
+                            <div class="mb-8">
+                                <h3 class="text-sm font-black uppercase tracking-wider text-slate-400 mb-3">Experience & Projects</h3>
+                                <div>${formatBullets(data.experience)}</div>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-black uppercase tracking-wider text-slate-400 mb-3">Education</h3>
+                                <div>${formatBullets(data.education)}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } 
+        else if (templateId === '2') {
+            // TEMPLATE 2: Executive Split-Grid (With dark professional top border line)
+            html = `
+                <div class="p-10 bg-white text-slate-900 min-h-[850px]">
+                    <div class="border-b-4 border-teal-700 pb-6 mb-8 flex justify-between items-center border-t-2 border-slate-900 pt-4">
+                        <div class="flex items-center gap-4">
+                            ${data.profileImage ? `<img src="${data.profileImage}" class="w-20 h-20 object-cover rounded-full border-2 border-teal-700 shadow">` : ''}
+                            <div>
+                                <h1 class="text-3xl font-black">${data.fullName || 'Your Name'}</h1>
+                                <p class="text-md font-bold text-teal-700 uppercase tracking-wide">${data.jobTitle || 'Profession'}</p>
+                            </div>
+                        </div>
+                        <div class="text-right text-xs text-slate-600 space-y-1">
+                            <p>✉️ ${data.email || ''}</p><p>📞 ${data.phone || ''}</p><p>📍 ${data.location || ''}</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-6 mb-6">
+                        <div class="bg-slate-50 p-6 rounded-2xl border-l-4 border-teal-700 border-y border-r border-slate-200">
+                            <h3 class="text-xs font-black text-teal-700 mb-3 uppercase tracking-wider">Education</h3>
+                            <div class="text-xs">${formatBullets(data.education)}</div>
+                        </div>
+                        <div class="bg-slate-50 p-6 rounded-2xl border-l-4 border-teal-700 border-y border-r border-slate-200">
+                            <h3 class="text-xs font-black text-teal-700 mb-3 uppercase tracking-wider">Core Skills</h3>
+                            <div class="flex flex-wrap">${formatSkills(data.skills)}</div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-2xl border-l-4 border-teal-700 border-y border-r border-slate-200">
+                        <h3 class="text-xs font-black text-teal-700 mb-3 uppercase tracking-wider">Experience & Projects</h3>
+                        <div class="text-xs">${formatBullets(data.experience)}</div>
+                    </div>
+                </div>
+            `;
+        }
+        else if (templateId === '3') {
+            // TEMPLATE 3: Corporate Top-Header Banner
+            html = `
+                <div class="p-10 bg-white text-slate-900 min-h-[850px]">
+                    <div class="flex items-center gap-6 bg-indigo-950 text-white p-8 rounded-2xl mb-8 shadow-lg border-b-4 border-indigo-500">
+                        ${data.profileImage ? `<img src="${data.profileImage}" class="w-24 h-32 object-cover rounded-xl border-2 border-white/30 shadow">` : ''}
+                        <div>
+                            <h1 class="text-3xl font-black">${data.fullName || 'Your Name'}</h1>
+                            <p class="text-md font-semibold text-indigo-300 mt-1 uppercase">${data.jobTitle || 'Profession'}</p>
+                            <p class="text-xs text-indigo-200 mt-3">✉️ ${data.email || ''} &bull; 📞 ${data.phone || ''} &bull; 📍 ${data.location || ''}</p>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-xs font-black uppercase tracking-widest text-indigo-900 mb-3 border-b-2 border-indigo-900 pb-1">Experience & Projects</h3>
+                            <div class="text-sm text-slate-700">${formatBullets(data.experience)}</div>
+                        </div>
+                        <div>
+                            <h3 class="text-xs font-black uppercase tracking-widest text-indigo-900 mb-3 border-b-2 border-indigo-900 pb-1">Education</h3>
+                            <div class="text-sm text-slate-700">${formatBullets(data.education)}</div>
+                        </div>
+                        <div>
+                            <h3 class="text-xs font-black uppercase tracking-widest text-indigo-900 mb-3 border-b-2 border-indigo-900 pb-1">Core Skills</h3>
+                            <div class="flex flex-wrap">${formatSkills(data.skills)}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        else if (templateId === '4') {
+            // TEMPLATE 4: Minimalist Elegant (Center-Aligned with clean dark frame)
+            html = `
+                <div class="p-12 text-center bg-amber-50/20 min-h-[850px] flex flex-col justify-between border-8 border-slate-900 m-2 rounded-xl">
+                    <div>
+                        ${data.profileImage ? `<div class="mb-4 flex justify-center"><img src="${data.profileImage}" class="w-24 h-24 object-cover rounded-full border-2 border-amber-800 shadow"></div>` : ''}
+                        <h1 class="text-4xl font-serif font-bold text-slate-900">${data.fullName || 'Your Name'}</h1>
+                        <p class="text-sm font-bold tracking-widest uppercase text-amber-800 mt-1">${data.jobTitle || 'Profession'}</p>
+                        <p class="text-xs text-slate-500 mt-2">✉️ ${data.email || ''} &bull; 📞 ${data.phone || ''} &bull; 📍 ${data.location || ''}</p>
+                        
+                        <div class="w-20 h-1 bg-slate-900 mx-auto my-6"></div>
+                        
+                        <div class="text-left space-y-6 max-w-2xl mx-auto">
+                            <div>
+                                <h3 class="text-xs font-black uppercase tracking-widest text-amber-900 mb-2 text-center border-b border-amber-200 pb-1">Experience & Projects</h3>
+                                <div class="text-sm text-slate-700">${formatBullets(data.experience)}</div>
+                            </div>
+                            <div>
+                                <h3 class="text-xs font-black uppercase tracking-widest text-amber-900 mb-2 text-center border-b border-amber-200 pb-1">Education</h3>
+                                <div class="text-sm text-slate-700">${formatBullets(data.education)}</div>
+                            </div>
+                            <div>
+                                <h3 class="text-xs font-black uppercase tracking-widest text-amber-900 mb-2 text-center border-b border-amber-200 pb-1">Core Skills</h3>
+                                <div class="flex flex-wrap justify-center">${formatSkills(data.skills)}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        else if (templateId === '5') {
+            // TEMPLATE 5: Creative Timeline Style (With sharp dark borders)
+            html = `
+                <div class="p-10 border-l-8 border-slate-900 bg-white text-slate-900 min-h-[850px]">
+                    <div class="mb-8 flex justify-between items-start border-b-2 border-slate-900 pb-4">
+                        <div>
+                            <span class="bg-emerald-900 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">Creative Layout</span>
+                            <h1 class="text-4xl font-black text-slate-900 mt-2">${data.fullName || 'Your Name'}</h1>
+                            <p class="text-md font-bold text-emerald-700 uppercase">${data.jobTitle || 'Profession'}</p>
+                            <p class="text-xs text-slate-500 mt-2">✉️ ${data.email || ''} | 📞 ${data.phone || ''} | 📍 ${data.location || ''}</p>
+                        </div>
+                        ${data.profileImage ? `<img src="${data.profileImage}" class="w-24 h-24 object-cover rounded-xl border-2 border-slate-900 shadow">` : ''}
+                    </div>
+                    <div class="space-y-6">
+                        <div class="bg-emerald-50/40 p-6 rounded-xl border-l-4 border-emerald-700 border-y border-r border-slate-200">
+                            <h3 class="text-xs font-black uppercase tracking-widest text-emerald-900 mb-3">Experience & Projects</h3>
+                            <div class="text-sm text-slate-700">${formatBullets(data.experience)}</div>
+                        </div>
+                        <div class="bg-emerald-50/40 p-6 rounded-xl border-l-4 border-emerald-700 border-y border-r border-slate-200">
+                            <h3 class="text-xs font-black uppercase tracking-widest text-emerald-900 mb-3">Education</h3>
+                            <div class="text-sm text-slate-700">${formatBullets(data.education)}</div>
+                        </div>
+                        <div>
+                            <h3 class="text-xs font-black uppercase tracking-widest text-emerald-900 mb-3">Core Skills</h3>
+                            <div class="flex flex-wrap">${formatSkills(data.skills)}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        else if (templateId === '6') {
+            // TEMPLATE 6: Executive Dark Purple Header Banner (Fixed to deep purple theme!)
+            html = `
+                <div class="bg-white text-slate-900 min-h-[850px]">
+                    <div class="bg-purple-950 text-white p-10 flex items-center justify-between border-b-4 border-purple-600">
+                        <div class="flex items-center gap-4">
+                            ${data.profileImage ? `<img src="${data.profileImage}" class="w-20 h-20 object-cover rounded-full border-2 border-purple-400 shadow">` : ''}
+                            <div>
+                                <h1 class="text-3xl font-black text-purple-300">${data.fullName || 'Your Name'}</h1>
+                                <p class="text-md font-semibold tracking-wide text-slate-200 mt-1 uppercase">${data.jobTitle || 'Profession'}</p>
+                            </div>
+                        </div>
+                        <div class="text-right text-xs text-slate-300 space-y-1">
+                            <p>✉️ ${data.email || ''}</p><p>📞 ${data.phone || ''}</p><p>📍 ${data.location || ''}</p>
+                        </div>
+                    </div>
+                    <div class="p-10 space-y-6">
+                        <div>
+                            <h3 class="text-xs font-black uppercase tracking-widest text-purple-900 mb-3 border-b-2 border-purple-900 pb-1">Experience & Projects</h3>
+                            <div class="text-sm text-slate-700">${formatBullets(data.experience)}</div>
+                        </div>
+                        <div>
+                            <h3 class="text-xs font-black uppercase tracking-widest text-purple-900 mb-3 border-b-2 border-purple-900 pb-1">Education</h3>
+                            <div class="text-sm text-slate-700">${formatBullets(data.education)}</div>
+                        </div>
+                        <div>
+                            <h3 class="text-xs font-black uppercase tracking-widest text-purple-900 mb-3 border-b-2 border-purple-900 pb-1">Core Skills</h3>
+                            <div class="flex flex-wrap">${formatSkills(data.skills)}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        container.innerHTML = html;
 
         function downloadPDF() {
             const element = document.getElementById('resumeContainer');
             const options = {
-                margin:       5,
-                filename:     'SkillDocket-Resume.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
+                margin:       0,
+                filename:     `SkillDocket-Template-${templateId}.pdf`,
+                image:        { type: 'jpeg', quality: 0.99 },
+                html2canvas:  { scale: 2, useCORS: true },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
             html2pdf().from(element).set(options).save();

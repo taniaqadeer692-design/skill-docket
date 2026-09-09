@@ -6,91 +6,99 @@
     <title>Resume Builder - SkillDocket</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 font-sans text-gray-900">
+<body class="bg-slate-900 font-sans text-slate-100 min-h-screen py-10">
 
     <!-- Navbar -->
-    <nav class="bg-white shadow-sm py-4 px-8 flex justify-between items-center">
-        <div class="text-2xl font-bold text-blue-600 tracking-wide">SkillDocket</div>
-        <div class="space-x-6">
-            <a href="index.html" class="text-gray-600 hover:text-blue-600 font-medium">Home</a>
-            <a href="login.html" class="text-gray-600 hover:text-blue-600 font-medium">Logout</a>
+    <nav class="max-w-3xl mx-auto mb-8 bg-slate-800/80 backdrop-blur border border-slate-700 py-4 px-8 rounded-2xl flex justify-between items-center shadow-lg">
+        <div class="text-xl font-black text-blue-500 tracking-wide">SkillDocket Builder</div>
+        <div class="space-x-4 text-sm font-semibold">
+            <a href="templates.html" class="text-slate-300 hover:text-blue-400 transition">&larr; Change Template</a>
+            <a href="index.html" class="text-slate-300 hover:text-blue-400 transition">Home</a>
         </div>
     </nav>
 
     <!-- Form Container -->
-    <div class="max-w-3xl mx-auto my-10 bg-white p-8 rounded-2xl shadow-md border border-gray-100">
-        <div class="mb-8 border-b pb-4">
-            <h2 class="text-2xl font-bold text-gray-800">Create Your Resume</h2>
-            <p class="text-gray-500 text-sm mt-1">Fill in your details and upload a photo to generate your CV.</p>
+    <div class="max-w-3xl mx-auto bg-slate-800 border border-slate-700 p-8 md:p-10 rounded-2xl shadow-2xl">
+        <div class="mb-8 border-b border-slate-700 pb-4">
+            <h2 class="text-2xl font-black text-white">Enter Your Professional Details</h2>
+            <p class="text-slate-400 text-xs mt-1">Fill out the fields below. Use new lines for multiple education or experience points.</p>
         </div>
 
         <form id="resumeForm" onsubmit="generateResume(event)">
             <!-- Personal Info -->
-            <h3 class="text-lg font-semibold text-blue-600 mb-4">1. Personal Information & Photo</h3>
+            <h3 class="text-sm font-bold text-blue-400 uppercase tracking-wider mb-4">1. Personal Information & Photo</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                    <label class="block text-gray-700 text-sm font-semibold mb-2">Full Name</label>
-                    <input type="text" id="fullName" placeholder="Tania Qadeer" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    <label class="block text-slate-300 text-xs font-semibold mb-2">Full Name</label>
+                    <input type="text" id="fullName" placeholder="Tania Qadeer" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-blue-500 outline-none" required>
                 </div>
                 <div>
-                    <label class="block text-gray-700 text-sm font-semibold mb-2">Job Title / Profession</label>
-                    <input type="text" id="jobTitle" placeholder="Software Engineering Student" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    <label class="block text-slate-300 text-xs font-semibold mb-2">Job Title / Profession</label>
+                    <input type="text" id="jobTitle" placeholder="Senior Software Engineer" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-blue-500 outline-none" required>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div>
-                    <label class="block text-gray-700 text-sm font-semibold mb-2">Email</label>
-                    <input type="email" id="email" placeholder="tania@example.com" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    <label class="block text-slate-300 text-xs font-semibold mb-2">Email</label>
+                    <input type="email" id="email" placeholder="tania@example.com" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-blue-500 outline-none" required>
                 </div>
                 <div>
-                    <label class="block text-gray-700 text-sm font-semibold mb-2">Phone</label>
-                    <input type="text" id="phone" placeholder="+92 300 1234567" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    <label class="block text-slate-300 text-xs font-semibold mb-2">Phone</label>
+                    <input type="text" id="phone" placeholder="+92 300 1234567" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-blue-500 outline-none" required>
                 </div>
                 <div>
-                    <label class="block text-gray-700 text-sm font-semibold mb-2">Location</label>
-                    <input type="text" id="location" placeholder="Lahore, Pakistan" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    <label class="block text-slate-300 text-xs font-semibold mb-2">Location</label>
+                    <input type="text" id="location" placeholder="Lahore, Pakistan" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-blue-500 outline-none" required>
                 </div>
             </div>
 
             <!-- Profile Picture Upload -->
             <div class="mb-6">
-                <label class="block text-gray-700 text-sm font-semibold mb-2">Upload Profile Picture</label>
-                <input type="file" id="profileImage" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50">
+                <label class="block text-slate-300 text-xs font-semibold mb-2">Upload Profile Picture (Optional)</label>
+                <input type="file" id="profileImage" accept="image/*" class="w-full px-4 py-2 bg-slate-900 border border-slate-700 rounded-xl text-slate-400 text-xs file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500 cursor-pointer">
             </div>
 
             <!-- Education -->
-            <h3 class="text-lg font-semibold text-blue-600 mb-4 mt-8">2. Education</h3>
+            <h3 class="text-sm font-bold text-blue-400 uppercase tracking-wider mb-4 mt-8">2. Education</h3>
             <div class="mb-6">
-                <textarea id="education" rows="2" placeholder="BS Computer Science - University Name (2022 - 2026)" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                <label class="block text-slate-300 text-xs font-semibold mb-2">Degrees / Certifications (Press Enter for new bullets)</label>
+                <textarea id="education" rows="3" placeholder="BS Computer Science - FAST NUCES&#10;• Graduated with Honors" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
             </div>
 
             <!-- Experience -->
-            <h3 class="text-lg font-semibold text-blue-600 mb-4 mt-8">3. Experience / Projects</h3>
+            <h3 class="text-sm font-bold text-blue-400 uppercase tracking-wider mb-4 mt-8">3. Experience & Projects</h3>
             <div class="mb-6">
-                <textarea id="experience" rows="3" placeholder="Web Development Intern at XYZ Company..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                <label class="block text-slate-300 text-xs font-semibold mb-2">Work History or Key Projects (Press Enter for new bullets)</label>
+                <textarea id="experience" rows="4" placeholder="Software Engineering Intern at TechCorp&#10;• Developed responsive web applications using Tailwind CSS&#10;• Optimized code performance" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
             </div>
 
             <!-- Skills -->
-            <h3 class="text-lg font-semibold text-blue-600 mb-4 mt-8">4. Skills</h3>
+            <h3 class="text-sm font-bold text-blue-400 uppercase tracking-wider mb-4 mt-8">4. Core Skills</h3>
             <div class="mb-8">
-                <input type="text" id="skills" placeholder="HTML, CSS, JavaScript, Git" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                <label class="block text-slate-300 text-xs font-semibold mb-2">Skills (Comma separated)</label>
+                <input type="text" id="skills" placeholder="JavaScript, React.js, Tailwind CSS, Python, Git" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-blue-500 outline-none">
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="w-full bg-blue-600 text-white py-3.5 rounded-xl font-semibold hover:bg-blue-700 transition shadow-lg text-lg">
-                Generate Modern Resume
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-xl font-bold transition shadow-xl text-sm tracking-wide">
+                Generate Professional Resume &rarr;
             </button>
         </form>
     </div>
 
-    <!-- JavaScript to transfer data to resume.html -->
+    <!-- JavaScript to Handle Data Transfer & Selected Template -->
     <script>
+        // URL se template ID uthana (jo user ne templates.html se select ki thi)
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedTemplate = urlParams.get('template') || '1';
+
         function generateResume(event) {
             event.preventDefault();
 
-            // Collect form data
+            // Form ka saara data object mein pack karna
             const data = {
+                templateId: selectedTemplate,
                 fullName: document.getElementById('fullName').value,
                 jobTitle: document.getElementById('jobTitle').value,
                 email: document.getElementById('email').value,
@@ -101,20 +109,22 @@
                 skills: document.getElementById('skills').value
             };
 
-            // Handle Profile Image
+            // Profile Picture ko handle karna
             const fileInput = document.getElementById('profileImage');
             if (fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     data.profileImage = e.target.result;
                     localStorage.setItem('resumeData', JSON.stringify(data));
-                    window.location.href = 'resume.html'; // Redirect to template page
+                    // Sahi template page par redirect karna
+                    window.location.href = `resume.html?template=${selectedTemplate}`;
                 }
                 reader.readAsDataURL(fileInput.files[0]);
             } else {
                 data.profileImage = '';
                 localStorage.setItem('resumeData', JSON.stringify(data));
-                window.location.href = 'resume.html'; // Redirect to template page
+                // Sahi template page par redirect karna
+                window.location.href = `resume.html?template=${selectedTemplate}`;
             }
         }
     </script>
